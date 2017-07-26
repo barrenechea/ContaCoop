@@ -231,7 +231,7 @@ class ExcelController extends Controller
                 }
                 if($transfers)
                 {
-                    $excel->sheet('TRASPASOS', function($sheet) use ($outcomes) {
+                    $excel->sheet('TRASPASOS', function($sheet) use ($transfers) {
                         $sheet->setColumnFormat(array(
                                 'K' => '_ $* #,##0_ ;_ $* -#,##0_ ;_ $* "-"_ ;_ @_ ', // Contabilidad
                                 'L' => '_ $* #,##0_ ;_ $* -#,##0_ ;_ $* "-"_ ;_ @_ ', // Contabilidad
