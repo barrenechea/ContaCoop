@@ -83,7 +83,7 @@
 <script type="text/javascript">
 @if($min = \App\Voucherdetail::orderBy('date', 'asc')->first())
 
-    @if($min->date)
+    @if(\App\Voucherdetail::orderBy('date', 'asc')->first()->date)
         var min = new Date('{{ $min->year . '/' . $min->month . '/' . $min->day }}');
     @endif
 
