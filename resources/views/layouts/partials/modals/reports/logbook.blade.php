@@ -81,43 +81,46 @@
 </style>
 
 <script type="text/javascript">
-@if($min = \App\Voucherdetail::orderBy('date', 'asc')->first()->date)
-    var min = new Date('{{ $min->year . '/' . $min->month . '/' . $min->day }}');
-@endif
+@if($min = \App\Voucherdetail::orderBy('date', 'asc')->first())
 
-@if($max = \App\Voucherdetail::orderBy('date', 'desc')->first()->date)
-    var max = new Date('{{ $max->year . '/' . $max->month . '/' . $max->day }}');
-@endif
-    $("#start").datepicker({
-        language: 'es',
-        todayHighlight: true,
-        autoclose: true,
-        startDate: min,
-        endDate: max
-    });
-    $("#finish").datepicker({
-        language: 'es',
-        todayHighlight: true,
-        autoclose: true,
-        startDate: min,
-        endDate: max
-    });
+    @if($min->date)
+        var min = new Date('{{ $min->year . '/' . $min->month . '/' . $min->day }}');
+    @endif
 
-    function submitForm(){
-        $('#modal-logbook').modal("hide");
-
-        $.notify({
-        title: 'Notificación',
-        message: 'Su descarga comenzará en breves momentos...'
-        },{
-            type: 'minimalist',
-            delay: 5000,
-            template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-                '<span data-notify="title">{1}</span>' +
-                '<span data-notify="message">{2}</span>' +
-            '</div>'
+    @if($max = \App\Voucherdetail::orderBy('date', 'desc')->first()->date)
+        var max = new Date('{{ $max->year . '/' . $max->month . '/' . $max->day }}');
+    @endif
+        $("#start").datepicker({
+            language: 'es',
+            todayHighlight: true,
+            autoclose: true,
+            startDate: min,
+            endDate: max
+        });
+        $("#finish").datepicker({
+            language: 'es',
+            todayHighlight: true,
+            autoclose: true,
+            startDate: min,
+            endDate: max
         });
 
-        return true;
-    }
+        function submitForm(){
+            $('#modal-logbook').modal("hide");
+
+            $.notify({
+            title: 'Notificación',
+            message: 'Su descarga comenzará en breves momentos...'
+            },{
+                type: 'minimalist',
+                delay: 5000,
+                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                    '<span data-notify="title">{1}</span>' +
+                    '<span data-notify="message">{2}</span>' +
+                '</div>'
+            });
+
+            return true;
+        }
+@endif
 </script>
