@@ -8,3 +8,4 @@
 <script src="{{ asset('/assets/js/core/jquery.placeholder.min.js') }}"></script>
 <script src="{{ asset('/assets/js/core/js.cookie.min.js') }}"></script>
 <script src="{{ asset('/assets/js/app.js') }}"></script>
+<script src="{{ asset('/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js') }}"></script>

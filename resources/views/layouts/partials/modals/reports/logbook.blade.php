@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-logbook" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="modal-logbook" name="modal-logbook" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-popin">
         <form action="{{ url('/report/logbook') }}" class="form-horizontal push-10-t push-10" method="post">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -49,7 +49,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-sm btn-default" type="button" data-dismiss="modal">Cerrar</button>
-                    <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-file-excel-o"></i> Descargar</button>
+                    <button class="btn btn-sm btn-primary" type="submit" onclick="submitForm();"><i class="fa fa-file-excel-o"></i> Descargar</button>
                 </div>
             </div>
         </form>
@@ -61,6 +61,25 @@
 <script src="{{ asset('/assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ asset('/assets/js/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js') }}"></script>
 
+<style type="text/css">
+.alert-minimalist {
+    background-color: rgb(241, 242, 240);
+    border-color: rgba(149, 149, 149, 0.3);
+    border-radius: 3px;
+    color: rgb(149, 149, 149);
+    padding: 10px;
+}
+.alert-minimalist > [data-notify="title"] {
+    color: rgb(51, 51, 51);
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.alert-minimalist > [data-notify="message"] {
+    font-size: 80%;
+}
+</style>
+
 <script type="text/javascript">
 @if($min = \App\Voucherdetail::orderBy('date', 'asc')->first()->date)
     var min = new Date('{{ $min->year . '/' . $min->month . '/' . $min->day }}');
@@ -69,7 +88,6 @@
 @if($max = \App\Voucherdetail::orderBy('date', 'desc')->first()->date)
     var max = new Date('{{ $max->year . '/' . $max->month . '/' . $max->day }}');
 @endif
-
     $("#start").datepicker({
         language: 'es',
         todayHighlight: true,
@@ -84,4 +102,22 @@
         startDate: min,
         endDate: max
     });
+
+    function submitForm(){
+        $('#modal-logbook').modal("hide");
+
+        $.notify({
+        title: 'Notificación',
+        message: 'Su descarga comenzará en breves momentos...'
+        },{
+            type: 'minimalist',
+            delay: 5000,
+            template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                '<span data-notify="title">{1}</span>' +
+                '<span data-notify="message">{2}</span>' +
+            '</div>'
+        });
+
+        return true;
+    }
 </script>
