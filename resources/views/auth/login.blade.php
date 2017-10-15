@@ -53,7 +53,7 @@
                         <div class="push-30-t push-50 animated fadeIn">
                             <!-- Login Title -->
                             <div class="text-center">
-                                <i class="fa fa-2x fa-circle-o-notch text-primary"></i>
+                                <img src="assets/img/favicons/apple-touch-icon-120x120.png" alt="logo" />
                                 <p class="text-muted push-15-t">Iniciar sesión</p>
                             </div>
                             <!-- END Login Title -->
