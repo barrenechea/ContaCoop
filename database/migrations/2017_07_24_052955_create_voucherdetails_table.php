@@ -24,8 +24,6 @@ class CreateVoucherdetailsTable extends Migration
             $table->date('date')->nullable();
             $table->integer('debit');
             $table->integer('credit');
-            $table->boolean('wants_sync')->default(false);
-            $table->boolean('synced')->default(false);
 
             $table->timestamps();
             $table->softDeletes();

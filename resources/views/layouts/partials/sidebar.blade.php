@@ -25,7 +25,7 @@
 
                     <li class="nav-main-heading"><span class="sidebar-mini-hide">Sincronizar</span></li>
                     <li>
-                        <a class="{{ Request::is('sync/index') ? 'active' : '' }}" href="{{ url('/sync/index') }}"><i class="si si-share"></i><span class="sidebar-mini-hide">Sincronizar @if($var = \App\Voucherdetail::where('wants_sync', true)->where('synced', false)->count())<span class="badge badge-warning">{{ $var }}</span>@endif</span></a>
+                        <a class="{{ Request::is('sync/index') ? 'active' : '' }}" href="{{ url('/sync/index') }}"><i class="si si-share"></i><span class="sidebar-mini-hide">Sincronizar @if($var = \App\Voucher::where('wants_sync', true)->where('synced', false)->count())<span class="badge badge-warning">{{ $var }}</span>@endif</span></a>
                     </li>
 
                     <li class="nav-main-heading"><span class="sidebar-mini-hide">Obtener Voucher</span></li>

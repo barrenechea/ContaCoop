@@ -8,7 +8,7 @@ Route::get('/', function () {
 	return redirect()->route('login');
 });
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth', 'init']], function () {
 	Route::get('home', 'HomeController@index');
 
 	// Route group for new stuff

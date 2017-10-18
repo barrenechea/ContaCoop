@@ -24,6 +24,8 @@ class CreateVouchersTable extends Migration
             $table->date('check_date')->nullable();
             $table->string('beneficiary')->nullable();
             $table->string('img')->nullable();
+            $table->boolean('wants_sync')->default(false);
+            $table->boolean('synced')->default(false);
             $table->timestamps();
             $table->softDeletes();
 

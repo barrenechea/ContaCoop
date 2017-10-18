@@ -24,7 +24,7 @@ class Voucher extends Model
      * @var array
      */
     protected $fillable = [
-    	'type', 'sequence', 'date', 'description', 'bank_id', 'check_number', 'check_date', 'beneficiary', 'img'
+    	'type', 'sequence', 'date', 'description', 'bank_id', 'check_number', 'check_date', 'beneficiary', 'img', 'wants_sync', 'synced'
     ];
 
     /**

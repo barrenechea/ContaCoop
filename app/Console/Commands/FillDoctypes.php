@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Doctype;
+use App\Role;
 
 class FillDoctypes extends Command
 {
@@ -38,6 +39,45 @@ class FillDoctypes extends Command
      */
     public function handle()
     {
+        if(Role::count() == 0)
+        {
+            $var = new Role;
+            $var->name = 'super_admin';
+            $var->description = 'Laravel Super Administrator';
+            $var->save();
+
+            $var = new Role;
+            $var->name = 'view_list_billdetail_payment';
+            $var->description = 'Ver vouchers';
+            $var->save();
+
+            $var = new Role;
+            $var->name = 'add_payment';
+            $var->description = 'Agregar vouchers';
+            $var->save();
+
+            $var = new Role;
+            $var->name = 'modify_payment';
+            $var->description = 'Modificar vouchers';
+            $var->save();
+
+            $var = new Role;
+            $var->name = 'delete_payment';
+            $var->description = 'Eliminar vouchers';
+            $var->save();
+
+            $var = new Role;
+            $var->name = 'view_report_external_accounting';
+            $var->description = 'Ver reportería';
+            $var->save();
+
+            $var = new Role;
+            $var->name = 'view_log';
+            $var->description = 'Ver registro de actividad (para auditorías)';
+            $var->save();
+        }
+        else
+            echo "Data already on database\n";
         if(Doctype::count() == 0)
         {
             $var = new Doctype;

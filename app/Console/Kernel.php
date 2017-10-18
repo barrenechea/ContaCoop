@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\FillDoctypes::class,
         Commands\FillFECU::class,
+        Commands\RefreshAccounts::class,
     ];
 
     /**

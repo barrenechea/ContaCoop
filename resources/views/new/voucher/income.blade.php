@@ -41,6 +41,12 @@
                                     <label for="correl">Correlativo</label>
                                 </div>
                             </div>
+                            <div class="col-sm-3 col-sm-offset-3">
+                                <div class="form-material">
+                                    <label class="css-input switch switch-sm switch-default">
+                                    <input type="checkbox" id="sync" name="sync" checked=""><span></span> Sincronizar voucher
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-3">
@@ -132,12 +138,6 @@
                                                 <input class="form-control" type="number" id="haber{{ $i }}" name="haber{{ $i }}" placeholder="..." value="0" min="0">
                                             </div>
                                         </td>
-                                        <td>
-                                            <div class="form-material input-group">
-                                                <label class="css-input switch switch-sm switch-default">
-                                                <input type="checkbox" id="sync{{ $i }}" name="sync{{ $i }}"><span></span>
-                                            </div>
-                                        </td>
                                     </tr>
                                     @endfor
 
@@ -205,7 +205,7 @@ var $doctypes = [ @foreach (\App\Doctype::all() as $doctype) { id: {{ $doctype->
 @for ($i = 0; $i <= 10; $i++) {
     $("#account{{ $i }}").select2({
         data: $accounts,
-        placeholder: "Seleccione una cuenta",
+        placeholder: "Seleccione...",
         allowClear: true,
         templateResult: formatOption
     });
@@ -228,7 +228,7 @@ var $doctypes = [ @foreach (\App\Doctype::all() as $doctype) { id: {{ $doctype->
             }
           },
         allowClear: true,
-        placeholder: "Seleccione un nombre"
+        placeholder: "Seleccione..."
     });
 
     $("#account{{ $i }}").on("select2:select", function (e) {

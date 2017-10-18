@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\Config;
+use App\Log;
 
 class Controller extends BaseController
 {
@@ -17,5 +18,13 @@ class Controller extends BaseController
     {
         $config = Config::where('name', $name)->first();
         return $config->value;
+    }
+
+    public function addlog($message)
+    {
+        $log = new Log;
+        $log->user_id = Auth::user()->id;
+        $log->message = $message;
+        $log->save();
     }
 }

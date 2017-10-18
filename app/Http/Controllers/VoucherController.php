@@ -68,6 +68,7 @@ class VoucherController extends Controller
         // Recuperar valores desde el request
         $tipo = 'I';
         $auto_correl = $request->input('auto_correl');
+        $sync = $request->input('sync');
         $date = $request->input('date');
         $date = Carbon::createFromDate(intval(explode('-', $date)[2]),intval(explode('-', $date)[1]),intval(explode('-', $date)[0]));
         $description = $request->input('description');
@@ -84,7 +85,6 @@ class VoucherController extends Controller
             $fechas[] = $request->input('fecha'.$i);
             $deberes[] = intval($request->input('debe'.$i));
             $haberes[] = intval($request->input('haber'.$i));
-            $syncs[] = $request->input('sync'.$i);
         }
         // End recuperar valores desde el request
 
@@ -126,6 +126,8 @@ class VoucherController extends Controller
         $voucher->sequence = $correl;
         $voucher->date = $date;
         $voucher->description = $description;
+        if($sync)
+            $voucher->wants_sync = true;
 
         // Guardar imagen en servidor
         if($request->hasFile('img'))
@@ -191,8 +193,6 @@ class VoucherController extends Controller
             $voucherdetail->date = Carbon::createFromDate(intval(explode('-', $fechas[$i])[2]),intval(explode('-', $fechas[$i])[1]),intval(explode('-', $fechas[$i])[0]));
             $voucherdetail->debit = $deberes[$i];
             $voucherdetail->credit = $haberes[$i];
-            if($syncs[$i])
-                $voucherdetail->wants_sync = true;
 
             $voucherdetail->save();
             // End generar Voucherdetail
