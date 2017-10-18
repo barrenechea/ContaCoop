@@ -5,22 +5,23 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Doctype;
 use App\Role;
+use App\Config;
 
-class FillDoctypes extends Command
+class FillGeneral extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'fill:doctypes';
+    protected $signature = 'fill:general';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Fill Doctypes on database';
+    protected $description = 'Fill general data on database';
 
     /**
      * Create a new command instance.
@@ -75,9 +76,50 @@ class FillDoctypes extends Command
             $var->name = 'view_log';
             $var->description = 'Ver registro de actividad (para auditorías)';
             $var->save();
+
+            $var = new Role;
+            $var->name = 'modify_admin_account';
+            $var->description = 'Administrar ContaCoop';
+            $var->save();
         }
         else
             echo "Data already on database\n";
+
+        if(Config::count() == 0)
+        {
+            $var = new Config;
+            $var->name = 'company_name';
+            $var->value = 'Cooperativa de Servicios Centro Comercial Alameda Maipú Limitada';
+            $var->save();
+
+            $var = new Config;
+            $var->name = 'company_rut';
+            $var->value = '73.923.900-1';
+            $var->save();
+
+            $var = new Config;
+            $var->name = 'company_business_field';
+            $var->value = 'Consejo de Administración de Edificios y Condominios';
+            $var->save();
+
+            $var = new Config;
+            $var->name = 'company_address';
+            $var->value = "Avda. Lib. Bernardo O'Higgins 3001, Santiago";
+            $var->save();
+
+            $var = new Config;
+            $var->name = 'company_legal_representative_name';
+            $var->value = 'Ricardo Orellana Labra';
+            $var->save();
+
+            $var = new Config;
+            $var->name = 'company_legal_representative_rut';
+            $var->value = '7.699.435-8';
+            $var->save();
+        }
+        else
+            echo "Data already on database\n";
+        
         if(Doctype::count() == 0)
         {
             $var = new Doctype;

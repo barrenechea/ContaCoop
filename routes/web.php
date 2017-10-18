@@ -13,7 +13,7 @@ Route::group(['middleware' => ['auth', 'init']], function () {
 
 	// Route group for new stuff
 	Route::group(['prefix' => 'new'], function () {
-		Route::group(['prefix' => 'voucher'], function () {
+		Route::group(['prefix' => 'voucher', 'middleware' => ['can:add_voucher']], function () {
 			Route::get('income', 'VoucherController@newIncomeGet');
 			Route::post('income', 'VoucherController@newIncomePost');
 
@@ -24,55 +24,70 @@ Route::group(['middleware' => ['auth', 'init']], function () {
 			Route::post('transfer', 'VoucherController@newTransferPost');
 		});
 
-		Route::post('account', 'AccountController@new');
-		Route::post('bank', 'BankController@new');
-		Route::post('identification', 'IdentificationController@new');
+		Route::group(['middleware' => ['can:manage_app']], function () {
+			Route::post('account', 'AccountController@new');
+			Route::post('bank', 'BankController@new');
+			Route::post('identification', 'IdentificationController@new');
+		});
 	});
 
 	// Route group for modifying stuff
 	Route::group(['prefix' => 'update'], function () {
-		Route::post('account', 'AccountController@update');
-		Route::post('bank', 'BankController@update');
-		Route::post('identification', 'IdentificationController@update');
+		Route::group(['middleware' => ['can:manage_app']], function () {
+			Route::post('account', 'AccountController@update');
+			Route::post('bank', 'BankController@update');
+			Route::post('identification', 'IdentificationController@update');
+		});
 	});
 
 	// Route group for listing stuff
 	Route::group(['prefix' => 'list'], function () {
-		Route::get('accounts', 'AccountController@list');
-		Route::get('identifications', 'IdentificationController@list');
-		Route::get('banks', 'BankController@list');
+		Route::group(['middleware' => ['can:manage_app']], function () {
+			Route::get('accounts', 'AccountController@list');
+			Route::get('identifications', 'IdentificationController@list');
+			Route::get('banks', 'BankController@list');
+		});
 	});
 
 	// Route group for deleting stuff
 	Route::group(['prefix' => 'delete'], function () {
-		Route::post('account', 'AccountController@delete');
-		Route::post('bank', 'BankController@delete');
-		Route::post('identification', 'IdentificationController@delete');
+		Route::group(['middleware' => ['can:manage_app']], function () {
+			Route::post('account', 'AccountController@delete');
+			Route::post('bank', 'BankController@delete');
+			Route::post('identification', 'IdentificationController@delete');
+		});
 	});
 
 	// Route group for downloading excel files
 	Route::group(['prefix' => 'excel'], function () {
-		Route::get('accounts', 'ExcelController@getAccounts');
-		Route::get('banks', 'ExcelController@getBanks');
-		Route::get('identifications', 'ExcelController@getIdentifications');
+		Route::group(['middleware' => ['can:manage_app']], function () {
+			Route::get('accounts', 'ExcelController@getAccounts');
+			Route::get('banks', 'ExcelController@getBanks');
+			Route::get('identifications', 'ExcelController@getIdentifications');
+		});
 	});
 
 	// Route group for finding stuff
-	Route::group(['prefix' => 'find'], function () {
+	Route::group(['prefix' => 'find', 'middleware' => ['can:view_voucher']], function () {
 		Route::post('voucher', 'VoucherController@searchVoucher');
 	});
 
 	// Route group for voucher visualization
-	Route::group(['prefix' => 'view'], function () {
+	Route::group(['prefix' => 'view', 'middleware' => ['can:view_voucher']], function () {
 		Route::group(['prefix' => 'voucher'], function () {
 			Route::get('{type}/{sequence}', 'VoucherController@viewVoucher');
 		});
 	});
 
 	// Route group for report generation
-	Route::group(['prefix' => 'report'], function () {
+	Route::group(['prefix' => 'report', 'middleware' => ['can:view_reports']], function () {
 		Route::post('logbook', 'ExcelController@logBook');
 		Route::get('generalledger', 'ExcelController@generalLedger');
+	});
+
+	// Route group for voucher synchronization
+	Route::group(['prefix' => 'sync', 'middleware' => ['can:sync_voucher']], function () {
+		Route::get('index', 'SyncController@index');
 	});
 
 	// Debug shit and migration
@@ -83,10 +98,5 @@ Route::group(['middleware' => ['auth', 'init']], function () {
 			Route::get('banks', 'DebugController@retrieveBanks');
 		});
 	});
-
-	// Route group for voucher synchronization
-	Route::group(['prefix' => 'sync'], function () {
-		Route::get('index', 'SyncController@index');
-	});
-
+	
 });

@@ -18,7 +18,7 @@ class DebugController extends Controller
     	$client = new Client();
 		$res = $client->request('GET', 'http://panel.alamedamaipu.cl/api/maecue', [
 		    'headers' => [
-		        'Authorization' => $this->findConfig('api_key')
+		        'Authorization' => env('API_KEY', '-')
 		    ]
 		]);
 
@@ -52,7 +52,7 @@ class DebugController extends Controller
     	$client = new Client();
 		$res = $client->request('GET', 'http://panel.alamedamaipu.cl/api/tabaux10', [
 		    'headers' => [
-		        'Authorization' => $this->findConfig('api_key')
+		        'Authorization' => env('API_KEY', '-')
 		    ]
 		]);
 		
@@ -72,7 +72,7 @@ class DebugController extends Controller
     	$client = new Client();
 		$res = $client->request('GET', 'http://panel.alamedamaipu.cl/api/tabanco', [
 		    'headers' => [
-		        'Authorization' => $this->findConfig('api_key')
+		        'Authorization' => env('API_KEY', '-')
 		    ]
 		]);
 		
