@@ -128,13 +128,13 @@
                                         <td>
                                             <div class="form-material input-group">
                                                 <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                                <input class="form-control" type="number" id="debe{{ $i }}" name="debe{{ $i }}" placeholder="..." value="0" min="0">
+                                                <input class="form-control" type="number" onClick="this.select();" id="debe{{ $i }}" name="debe{{ $i }}" placeholder="..." value="0" min="0">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="form-material input-group">
                                                 <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                                <input class="form-control" type="number" id="haber{{ $i }}" name="haber{{ $i }}" placeholder="..." value="0" min="0">
+                                                <input class="form-control" type="number" onClick="this.select();" id="haber{{ $i }}" name="haber{{ $i }}" placeholder="..." value="0" min="0">
                                             </div>
                                         </td>
                                     </tr>

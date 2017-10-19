@@ -160,13 +160,13 @@
                                         <td>
                                             <div class="form-material input-group">
                                                 <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                                <input class="form-control" type="number" id="debe{{ $i }}" name="debe{{ $i }}" placeholder="..." value="0" min="0">
+                                                <input class="form-control" type="number" onClick="this.select();" id="debe{{ $i }}" name="debe{{ $i }}" placeholder="..." value="0" min="0">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="form-material input-group">
                                                 <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                                <input class="form-control" type="number" id="haber{{ $i }}" name="haber{{ $i }}" placeholder="..." value="0" min="0">
+                                                <input class="form-control" type="number" onClick="this.select();" id="haber{{ $i }}" name="haber{{ $i }}" placeholder="..." value="0" min="0">
                                             </div>
                                         </td>
                                     </tr>
@@ -257,7 +257,7 @@ $("#bank").on("select2:select", function (e) {
 @for ($i = 0; $i <= 10; $i++) {
     $("#account{{ $i }}").select2({
         data: $accounts,
-        placeholder: "Seleccione una cuenta",
+        placeholder: "Seleccione...",
         allowClear: true,
         templateResult: formatOption,
         matcher: customMatcher
@@ -281,7 +281,7 @@ $("#bank").on("select2:select", function (e) {
             }
           },
         allowClear: true,
-        placeholder: "Seleccione un nombre"
+        placeholder: "Seleccione..."
     });
 
     $("#account{{ $i }}").on("select2:select", function (e) {
