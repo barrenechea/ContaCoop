@@ -14,11 +14,19 @@
                     </div>
                     <div class="block-content">
                         <div class="form-group">
-                            <div class="col-xs-12">
+                            <div class="col-xs-8">
                                 <div class="block-content">
                                     <div class="form-material">
-                                        <input class="form-control" type="text" id="code" name="code" placeholder="Ingrese código del voucher. Ej: 1-{{ \Carbon\Carbon::now()->year }}" required="">
+                                        <input class="form-control" type="number" id="code" name="code" placeholder="Ingrese código del voucher" required="">
                                         <label for="voucher">Código del voucher</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="block-content">
+                                    <div class="form-material">
+                                        <input class="form-control" type="number" id="year" name="year" placeholder="Ingrese año" required="">
+                                        <label for="year">Año</label>
                                     </div>
                                 </div>
                             </div>

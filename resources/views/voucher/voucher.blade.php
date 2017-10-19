@@ -15,7 +15,7 @@
                 </li>
                 @can('modify_voucher')
                 <li>
-                    <button type="button" onclick="#"><i class="fa fa-pencil"></i> Editar</button>
+                    <button type="button" onclick="swalUpdate();"><i class="fa fa-pencil"></i> Editar</button>
                 </li>
                 @endcan
                 @can('delete_voucher')
@@ -174,6 +174,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.min.js"></script>
 <script>
+function swalUpdate () {
+    $(location).attr('href','{{ url("/update/voucher") }}/{{ $voucher->id }}');
+}
+
 function swalDelete () {
     swal({
         title: 'Confirmación',

@@ -24,20 +24,16 @@ class VoucherController extends Controller
 
     public function searchVoucher(Request $request)
     {
-        $id = $code = $request->input('code');
-        $code = $request->input('code');
+        $id = $request->input('code');
+        $year = $request->input('year');
         $type = $request->input('type');
 
-        $code = explode('-', $code);
-        if(count($code) != 2)
-            return redirect()->back()->withErrors(['Código ingresado no es válido. Debe seguir el ejemplo: 1-2017']);
-
-        $voucher = Voucher::where('type', $type)->where('sequence', $code[0])->whereYear('date', $code[1])->first();
+        $voucher = Voucher::where('type', $type)->where('sequence', $id)->whereYear('date', $year)->first();
 
         if(!$voucher)
             return redirect()->back()->withErrors(['No se han encontrado registros en la búsqueda.']);
 
-        return redirect('/view/voucher/' . $type . '/' . $id);
+        return redirect('/view/voucher/' . $type . '/' . $id . '-' . $year);
     }
 
     public function newIncomeGet()
@@ -505,5 +501,20 @@ class VoucherController extends Controller
         else
             $request->session()->flash('warning', 'El voucher no ha podido ser eliminado');
         return redirect('/home');
+    }
+
+    public function updateGet($id)
+    {
+        $voucher = Voucher::find($id);
+
+        dd($voucher);
+    }
+
+    public function generateFolios(Request $request)
+    {
+        $start = $request->input('start');
+        $finish = $request->input('finish');
+
+        return view('voucher.folio', ['start' => $start, 'finish' => $finish]);
     }
 }

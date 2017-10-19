@@ -208,7 +208,8 @@ var $doctypes = [ @foreach (\App\Doctype::all() as $doctype) { id: {{ $doctype->
         data: $accounts,
         placeholder: "Seleccione...",
         allowClear: true,
-        templateResult: formatOption
+        templateResult: formatOption,
+        matcher: customMatcher
     });
 
     $("#doctype_id{{ $i }}").select2({
@@ -312,7 +313,20 @@ function formatOption (option) {
       '<div><strong>' + option.text + '</strong></div><div>' + option.title + '</div>'
     );
     return $option;
-  };
+};
+
+function customMatcher(params, data) {
+        // If there are no search terms, return all of the data
+        if ($.trim(params.term) === '') {
+          return data;
+        }
+
+        if(data.text.toUpperCase().indexOf(params.term.toUpperCase()) > -1 || data.title.toUpperCase().indexOf(params.term.toUpperCase()) > -1)
+            return data;
+
+        // Return `null` if the term should not be displayed
+        return null;
+}
 
 $( document ).ready(function() {
     updateCorrel();

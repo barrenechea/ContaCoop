@@ -259,7 +259,8 @@ $("#bank").on("select2:select", function (e) {
         data: $accounts,
         placeholder: "Seleccione una cuenta",
         allowClear: true,
-        templateResult: formatOption
+        templateResult: formatOption,
+        matcher: customMatcher
     });
 
     $("#doctype_id{{ $i }}").select2({
@@ -369,6 +370,19 @@ function formatOption (option) {
     );
     return $option;
 };
+
+function customMatcher(params, data) {
+        // If there are no search terms, return all of the data
+        if ($.trim(params.term) === '') {
+          return data;
+        }
+
+        if(data.text.toUpperCase().indexOf(params.term.toUpperCase()) > -1 || data.title.toUpperCase().indexOf(params.term.toUpperCase()) > -1)
+            return data;
+
+        // Return `null` if the term should not be displayed
+        return null;
+}
 
 $("#formulario").submit( function (e) {
     $("#sendButton").prop("disabled", true);

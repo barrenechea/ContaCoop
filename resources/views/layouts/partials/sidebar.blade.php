@@ -36,13 +36,14 @@
                         <a class="{{ Request::is('view/voucher/*') ? 'active' : '' }}" href="" data-toggle="modal" data-target="#modal-findvoucher"><i class="si si-magnifier"></i><span class="sidebar-mini-hide">Por código</span></a>
                     </li>
                     @endcan
-                    @can('view_reports')
-                    <li class="nav-main-heading"><span class="sidebar-mini-hide">Reportería</span></li>
+                    <li class="nav-main-heading"><span class="sidebar-mini-hide">Generar</span></li>
                     <li>
+                        @can('view_reports')
                         <a class="{{ Request::is('report/logbook') ? 'active' : '' }}" href="" data-toggle="modal" data-target="#modal-logbook"><i class="si si-book-open"></i><span class="sidebar-mini-hide">Libro diario</span></a>
                         <!-- <a class="{{ Request::is('report/generalledger') ? 'active' : '' }}" href="{{ url('/report/generalledger') }}"><i class="si si-notebook"></i><span class="sidebar-mini-hide">Libro mayor</span></a> -->
+                        @endcan
+                        <a class="{{ Request::is('report/logbook') ? 'active' : '' }}" href="" data-toggle="modal" data-target="#modal-folio"><i class="si si-docs"></i><span class="sidebar-mini-hide">Foliación</span></a>
                     </li>
-                    @endcan
                     @can('manage_app')
                     <li class="nav-main-heading"><span class="sidebar-mini-hide">Administración</span></li>
                     <li>
@@ -72,3 +73,5 @@
 @include('layouts.partials.modals.findvoucher')
 
 @include('layouts.partials.modals.reports.logbook')
+
+@include('layouts.partials.modals.folio')

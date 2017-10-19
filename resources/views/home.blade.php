@@ -21,6 +21,7 @@
     <div class="content content-narrow">
         <!-- Dashboard Cards -->
         <div class="row">
+            @can('add_voucher')
             <div class="col-lg-6">
                 <a href="#" data-toggle="modal" data-target="#modal-createvoucher">
                     <div class="block block-rounded">
@@ -33,6 +34,8 @@
                     </div>
                 </a>
             </div>
+            @endcan
+            @can('view_voucher')
             <div class="col-lg-6">
                 <a href="" data-toggle="modal" data-target="#modal-findvoucher">
                     <div class="block block-rounded">
@@ -45,6 +48,7 @@
                     </div>
                 </a>
             </div>
+            @endcan
         </div>
         <!-- END Dashboard Cards -->
     </div>

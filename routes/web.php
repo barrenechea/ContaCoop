@@ -41,6 +41,9 @@ Route::group(['middleware' => ['auth', 'init']], function () {
 			Route::get('sysconfig', 'SystemController@index');
 			Route::post('sysconfig', 'SystemController@updateSysConfig');
 		});
+
+		Route::get('voucher/{id}', 'VoucherController@updateGet');
+		Route::post('voucher', 'VoucherController@updatePost');
 	});
 
 	// Route group for listing stuff
@@ -78,10 +81,12 @@ Route::group(['middleware' => ['auth', 'init']], function () {
 	});
 
 	// Route group for voucher visualization
-	Route::group(['prefix' => 'view', 'middleware' => ['can:view_voucher']], function () {
-		Route::group(['prefix' => 'voucher'], function () {
+	Route::group(['prefix' => 'view'], function () {
+		Route::group(['prefix' => 'voucher', 'middleware' => ['can:view_voucher']], function () {
 			Route::get('{type}/{sequence}', 'VoucherController@viewVoucher');
 		});
+
+		Route::post('folios', 'VoucherController@generateFolios');
 	});
 
 	// Route group for report generation
