@@ -495,4 +495,15 @@ class VoucherController extends Controller
         $request->session()->flash('success', 'El voucher ha sido generado exitosamente');
         return redirect('/view/voucher/' . $tipo . '/' . $voucher->sequence . '-' . $voucher->date->year);
     }
+
+    public function delete(Request $request, $id)
+    {
+        $voucher = Voucher::find($id);
+
+        if($voucher->delete())
+            $request->session()->flash('success', 'El voucher ha sido eliminado exitosamente');
+        else
+            $request->session()->flash('warning', 'El voucher no ha podido ser eliminado');
+        return redirect('/home');
+    }
 }

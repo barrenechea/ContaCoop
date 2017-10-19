@@ -57,6 +57,9 @@
                             <li>
                                 <a class="{{ Request::is('list/identifications') ? 'active' : '' }}" href="{{ url('/list/identifications') }}">Administrar RUT's</a>
                             </li>
+                            <li>
+                                <a class="{{ Request::is('update/sysconfig') ? 'active' : '' }}" href="{{ url('/update/sysconfig') }}">Actualizar información</a>
+                            </li>
                         </ul>
                     </li>
                     @endcan

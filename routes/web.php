@@ -31,12 +31,15 @@ Route::group(['middleware' => ['auth', 'init']], function () {
 		});
 	});
 
-	// Route group for modifying stuff
+	// Route group for update stuff
 	Route::group(['prefix' => 'update'], function () {
 		Route::group(['middleware' => ['can:manage_app']], function () {
 			Route::post('account', 'AccountController@update');
 			Route::post('bank', 'BankController@update');
 			Route::post('identification', 'IdentificationController@update');
+
+			Route::get('sysconfig', 'SystemController@index');
+			Route::post('sysconfig', 'SystemController@updateSysConfig');
 		});
 	});
 
@@ -56,6 +59,8 @@ Route::group(['middleware' => ['auth', 'init']], function () {
 			Route::post('bank', 'BankController@delete');
 			Route::post('identification', 'IdentificationController@delete');
 		});
+
+		Route::get('voucher/{id}', 'VoucherController@delete')->middleware('can:delete_voucher');
 	});
 
 	// Route group for downloading excel files

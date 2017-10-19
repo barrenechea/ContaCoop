@@ -25,7 +25,7 @@
         <div class="col-lg-12">
             <div class="block">
                 <!-- Form -->
-                <form class="form-horizontal" action="{{ url('/new/voucher/transfer') }}" method="post" enctype="multipart/form-data">
+                <form class="form-horizontal" id="formulario" action="{{ url('/new/voucher/transfer') }}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="block-content">
                         <div class="form-group">
@@ -153,7 +153,7 @@
                     <div class="block-content block-content-mini block-content-full border-t">
                         <div class="row">
                             <div class="col-xs-12 text-right">
-                                <button class="btn btn-default" type="submit"><i class="fa fa-check-circle-o"></i> Emitir</button>
+                                <button class="btn btn-default" id="sendButton" type="submit"><i class="fa fa-check-circle-o"></i> Emitir</button>
                             </div>
                         </div>
                     </div>
@@ -241,6 +241,10 @@ function formatOption (option) {
     );
     return $option;
 };
+
+$("#formulario").submit( function (e) {
+    $("#sendButton").prop("disabled", true);
+});
 
 </script>
 

@@ -193,7 +193,7 @@ class ExcelController extends Controller
                                 '',
                                 $outcome->account->codigo,
                                 $outcome->account->nombre,
-                                $outcome->doctype ? $income->doctype->code : '',
+                                $outcome->doctype ? $outcome->doctype->code : '',
                                 $outcome->doc_number,
                                 $outcome->date->format('d-m-Y'),
                                 $outcome->identification ? $outcome->identification->rut : '',
@@ -247,7 +247,7 @@ class ExcelController extends Controller
                                 '',
                                 $transfer->account->codigo,
                                 $transfer->account->nombre,
-                                $transfer->doctype ? $income->doctype->code : '',
+                                $transfer->doctype ? $transfer->doctype->code : '',
                                 $transfer->doc_number,
                                 $transfer->date->format('d-m-Y'),
                                 $transfer->detail,
@@ -262,14 +262,14 @@ class ExcelController extends Controller
                         if($transfers->count() > 0)
                         {
                             $debe = 'K';
-                            $debe .= $outcomes->count()+2;
+                            $debe .= $transfers->count()+2;
                             $sumdebe = '=SUM(K2:K';
-                            $sumdebe .= $outcomes->count()+1;
+                            $sumdebe .= $transfers->count()+1;
                             $sumdebe .= ')';
                             $haber = 'L';
-                            $haber .= $outcomes->count()+2;
+                            $haber .= $transfers->count()+2;
                             $sumhaber = '=SUM(L2:L';
-                            $sumhaber .= $outcomes->count()+1;
+                            $sumhaber .= $transfers->count()+1;
                             $sumhaber .= ')';
                             $sheet->setCellValue($debe, $sumdebe);
                             $sheet->setCellValue($haber, $sumhaber);

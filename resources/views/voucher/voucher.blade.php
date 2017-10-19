@@ -11,9 +11,18 @@
         <div class="block-header hidden-print">
             <ul class="block-options">
                 <li>
-                    <!-- Print Page functionality is initialized in App() -> uiHelperPrint() -->
                     <button type="button" onclick="App.initHelper('print-page');"><i class="si si-printer"></i> Imprimir</button>
                 </li>
+                @can('modify_voucher')
+                <li>
+                    <button type="button" onclick="#"><i class="fa fa-pencil"></i> Editar</button>
+                </li>
+                @endcan
+                @can('delete_voucher')
+                <li>
+                    <button type="button" onclick="swalDelete();"><i class="fa fa-close"></i> Eliminar</button>
+                </li>
+                @endcan
             </ul>
         </div>
         <div class="block-content block-content-narrow">
@@ -100,43 +109,49 @@
                 </table>
             </div>
             <div class="row">
-                <div class="col-xs-4 col-xs-offset-1">
-                    <table class="table table-bordered table-condensed">
-                        <tbody>
-                            <tr>
-                                <td class="text-center" style="width: 33%; font-size: small;"><b>CERTIFICACIÓN EMPRESA</b></td>
-                            </tr>
-                            <tr>
-                                <td><br><br><br><br></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="col-xs-6">
+                    <div class="col-xs-8 col-xs-offset-2" style="margin-top: 50px;">
+                        <table class="table table-bordered table-condensed">
+                            <tbody>
+                                <tr>
+                                    <td class="text-center" style="width: 33%; font-size: small;"><b>CERTIFICACIÓN EMPRESA</b></td>
+                                </tr>
+                                <tr>
+                                    <td><br><br><br><br></td>
+                                </tr>
+                                @if( $voucher->type == 'E' )
+                                <tr>
+                                    <td class="text-center" style="width: 33%; font-size: small;"><b>FIRMA 1ª REVISIÓN</b></td>
+                                </tr>
+                                <tr>
+                                    <td><br><br><br><br></td>
+                                </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+                @if( $voucher->type == 'E' )
+                <div class="col-xs-6" style="margin-top: 100px;">
+                    <div class="col-xs-9 col-xs-offset-2">
+                        <hr style="border-color: black;">
+                        <p class="text-uppercase text-center" style="font-size: small;"><b>Recibí conforme</b></p>
+                    </div>
+                    <div class="col-xs-2">
+                        <p class="text-uppercase text-right" style="font-size: small;"><b>Nombre:</b></p>
+                    </div>
+                    <div class="col-xs-9">
+                        <hr style="border-color: black;">
+                    </div>
+                    <div class="col-xs-2">
+                        <p class="text-uppercase text-right" style="font-size: small;"><b>C.I. :</b></p>
+                    </div>
+                    <div class="col-xs-9">
+                        <hr style="border-color: black;">
+                    </div>
+                </div>
+                @endif
             </div>
-            @if( $voucher->type == 'E' )
-            <div class="row">
-                <div class="col-xs-5 col-xs-offset-6">
-                    <hr style="border-color: black;">
-                    <p class="text-uppercase text-center" style="font-size: small;"><b>Recibí conforme</b></p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-2 col-xs-offset-4">
-                    <p class="text-uppercase text-right" style="font-size: small;"><b>Nombre:</b></p>
-                </div>
-                <div class="col-xs-5">
-                    <hr style="border-color: black;">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-2 col-xs-offset-4">
-                    <p class="text-uppercase text-right" style="font-size: small;"><b>C.I. :</b></p>
-                </div>
-                <div class="col-xs-5">
-                    <hr style="border-color: black;">
-                </div>
-            </div>
-            @endif
             @if($voucher->img)
             <div class="pagebreak"></div>
             
@@ -155,4 +170,29 @@
         </div>
     </div>
 </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.min.js"></script>
+<script>
+function swalDelete () {
+    swal({
+        title: 'Confirmación',
+        text: "¿Confirma la eliminación del voucher?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar',
+        cancelButtonText: 'No'
+        }).then(function () {
+            swal({
+                allowOutsideClick: false,
+                onOpen: function () {
+                    swal.showLoading()
+                }
+            });
+            $(location).attr('href','{{ url("/delete/voucher") }}/{{ $voucher->id }}');
+    });
+}
+</script>
 @endsection
