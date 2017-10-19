@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Account;
 use App\Identification;
@@ -193,6 +194,7 @@ class VoucherController extends Controller
             $voucherdetail->save();
             // End generar Voucherdetail
         }
+        $this->addlog('Generó nuevo voucher de Ingreso: ' . $voucher->sequence . '-' . $voucher->date->year);
         $request->session()->flash('success', 'El voucher ha sido generado exitosamente');
         return redirect('/view/voucher/' . $tipo . '/' . $voucher->sequence . '-' . $voucher->date->year);
     }
@@ -363,6 +365,8 @@ class VoucherController extends Controller
             $voucherdetail->save();
             // End generar Voucherdetail
         }
+        $this->addlog('Generó nuevo voucher de Egreso: ' . $voucher->sequence . '-' . $voucher->date->year);
+
         $request->session()->flash('success', 'El voucher ha sido generado exitosamente');
         return redirect('/view/voucher/' . $tipo . '/' . $voucher->sequence . '-' . $voucher->date->year);
     }
@@ -488,16 +492,22 @@ class VoucherController extends Controller
             $voucherdetail->save();
             // End generar Voucherdetail
         }
+        $this->addlog('Generó nuevo voucher de Traspaso: ' . $voucher->sequence . '-' . $voucher->date->year);
+
         $request->session()->flash('success', 'El voucher ha sido generado exitosamente');
         return redirect('/view/voucher/' . $tipo . '/' . $voucher->sequence . '-' . $voucher->date->year);
     }
 
     public function delete(Request $request, $id)
     {
-        $voucher = Voucher::find($id);
+        $voucher = Voucher::findOrFail($id);
+        $desc = ($voucher->type == 'I' ? 'Ingreso' : ($voucher->type == 'E' ? 'Egreso' : ($voucher->type == 'T' ? 'Traspaso' : 'Desconocido')));
 
         if($voucher->delete())
+        {
+            $this->addlog('Eliminó voucher de ' . $desc . ': ' . $voucher->sequence . '-' . $voucher->date->year);
             $request->session()->flash('success', 'El voucher ha sido eliminado exitosamente');
+        }
         else
             $request->session()->flash('warning', 'El voucher no ha podido ser eliminado');
         return redirect('/home');

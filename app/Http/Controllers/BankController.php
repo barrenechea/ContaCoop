@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Bank;
 
@@ -22,7 +23,10 @@ class BankController extends Controller
         $bank->checkact = $checkact;
 
         if($bank->save())
+        {
+            $this->addlog('Agregó nuevo banco: ' . $bank->checking_account . ' - ' . $bank->name);
             $request->session()->flash('success', 'El banco ha sido ingresado exitosamente');
+        }
         else
             $request->session()->flash('warning', 'El banco no ha podido ser ingresado');
         
@@ -58,7 +62,10 @@ class BankController extends Controller
             $bank->account_id = $account_id;
             $bank->checkact = $checkact;
             if($bank->save())
+            {
+                $this->addlog('Actualizó banco: ' . $bank->checking_account . ' - ' . $bank->name);
                 $request->session()->flash('success', 'El banco ha sido actualizado exitosamente');
+            }
             else
                 $request->session()->flash('warning', 'El banco no ha podido ser actualizado');
         }
@@ -73,7 +80,10 @@ class BankController extends Controller
         $id = $request->input('bank');
         $bank = Bank::find($id);
         if($bank && $bank->delete())
+        {
+            $this->addlog('Eliminó banco: ' . $bank->checking_account . ' - ' . $bank->name);
             $request->session()->flash('success', 'La cuenta bancaria ha sido eliminada exitosamente');
+        }
         else
             $request->session()->flash('warning', 'La cuenta bancaria no ha podido ser eliminada');
         

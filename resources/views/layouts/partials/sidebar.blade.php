@@ -42,7 +42,7 @@
                         <a class="{{ Request::is('report/logbook') ? 'active' : '' }}" href="" data-toggle="modal" data-target="#modal-logbook"><i class="si si-book-open"></i><span class="sidebar-mini-hide">Libro diario</span></a>
                         <!-- <a class="{{ Request::is('report/generalledger') ? 'active' : '' }}" href="{{ url('/report/generalledger') }}"><i class="si si-notebook"></i><span class="sidebar-mini-hide">Libro mayor</span></a> -->
                         @endcan
-                        <a class="{{ Request::is('report/logbook') ? 'active' : '' }}" href="" data-toggle="modal" data-target="#modal-folio"><i class="si si-docs"></i><span class="sidebar-mini-hide">Foliación</span></a>
+                        <a class="{{ Request::is('view/folios') ? 'active' : '' }}" href="" data-toggle="modal" data-target="#modal-folio"><i class="si si-docs"></i><span class="sidebar-mini-hide">Foliación</span></a>
                     </li>
                     @can('manage_app')
                     <li class="nav-main-heading"><span class="sidebar-mini-hide">Administración</span></li>
@@ -60,6 +60,9 @@
                             </li>
                             <li>
                                 <a class="{{ Request::is('update/sysconfig') ? 'active' : '' }}" href="{{ url('/update/sysconfig') }}">Actualizar información</a>
+                            </li>
+                            <li>
+                                <a class="{{ Request::is('view/logs') ? 'active' : '' }}" href="{{ url('/view/logs') }}">Reg. de Actividad</a>
                             </li>
                         </ul>
                     </li>

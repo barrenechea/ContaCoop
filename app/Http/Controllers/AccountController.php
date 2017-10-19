@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Account;
 
@@ -39,7 +40,10 @@ class AccountController extends Controller
         $account->nombre = strtoupper($name);
 
         if($account->save())
+        {
+            $this->addlog('Agregó nueva cuenta contable: ' . $account->codigo . ' - ' . $account->nombre);
             $request->session()->flash('success', 'La cuenta contable ha sido ingresada exitosamente');
+        }
         else
             $request->session()->flash('warning', 'La cuenta contable no ha podido ser ingresada');
         
@@ -83,7 +87,10 @@ class AccountController extends Controller
             $account->nombre = strtoupper($name);
 
             if($account->save())
+            {
+                $this->addlog('Actualizó cuenta contable: ' . $account->codigo . ' - ' . $account->nombre);
                 $request->session()->flash('success', 'La cuenta contable ha sido actualizada exitosamente');
+            }
             else
                 $request->session()->flash('warning', 'La cuenta contable no ha podido ser actualizada');
         }
@@ -98,7 +105,10 @@ class AccountController extends Controller
         $id = $request->input('account');
         $account = Account::find($id);
         if($account && $account->delete())
+        {
+            $this->addlog('Eliminó cuenta contable: ' . $account->codigo . ' - ' . $account->nombre);
             $request->session()->flash('success', 'La cuenta contable ha sido eliminada exitosamente');
+        }
         else
             $request->session()->flash('warning', 'La cuenta contable no ha podido ser eliminada');
         

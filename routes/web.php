@@ -82,11 +82,11 @@ Route::group(['middleware' => ['auth', 'init']], function () {
 
 	// Route group for voucher visualization
 	Route::group(['prefix' => 'view'], function () {
-		Route::group(['prefix' => 'voucher', 'middleware' => ['can:view_voucher']], function () {
-			Route::get('{type}/{sequence}', 'VoucherController@viewVoucher');
-		});
+		Route::get('voucher/{type}/{sequence}', 'VoucherController@viewVoucher')->middleware('can:view_voucher');
 
 		Route::post('folios', 'VoucherController@generateFolios');
+
+		Route::get('logs', 'SystemController@getLogs')->middleware('can:view_log');
 	});
 
 	// Route group for report generation

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Identification;
 
@@ -17,7 +18,10 @@ class IdentificationController extends Controller
         $identification->name = $name;
 
         if($identification->save())
+        {
+            $this->addlog('Agregó nuevo RUT: ' . $identification->rut . ' - ' . $identification->name);
             $request->session()->flash('success', 'El RUT ha sido ingresado exitosamente');
+        }
         else
             $request->session()->flash('warning', 'El RUT no ha podido ser ingresado');
         
@@ -46,7 +50,10 @@ class IdentificationController extends Controller
             $identification->name = $name;
             $identification->rut = $rut;
             if($identification->save())
+            {
+                $this->addlog('Actualizó RUT: ' . $identification->rut . ' - ' . $identification->name);
                 $request->session()->flash('success', 'El RUT ha sido actualizado exitosamente');
+            }
             else
                 $request->session()->flash('warning', 'El RUT no ha podido ser actualizado');
         }
@@ -61,7 +68,10 @@ class IdentificationController extends Controller
         $id = $request->input('identification');
         $identification = Identification::find($id);
         if($identification && $identification->delete())
+        {
+            $this->addlog('Eliminó RUT: ' . $identification->rut . ' - ' . $identification->name);
             $request->session()->flash('success', 'El RUT ha sido eliminado exitosamente');
+        }
         else
             $request->session()->flash('warning', 'El RUT no ha podido ser eliminado');
         

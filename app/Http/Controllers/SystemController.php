@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Config;
+use App\Log;
 
 class SystemController extends Controller
 {
@@ -48,8 +50,39 @@ class SystemController extends Controller
         $config->value = $company_legal_representative_rut;
         $config->save();
 
+        $this->addlog('Actualizó información de la empresa');
+
         // Return
         $request->session()->flash('success', 'La información ha sido actualizada exitosamente');
         return redirect()->back();
+    }
+
+    public function getLogs(Request $request)
+    {
+        if($request->input('find'))
+        {
+            $searchTerm = $request->input('find');
+            // Search by username
+            $logs = Log::whereHas('user', function ($query) use ($searchTerm) {
+                $query->where('username', 'LIKE', '%' . $searchTerm . '%');
+            })->orderBy('created_at', 'desc')->get();
+
+            if($logs->count() == 0)
+            {
+                // Search by name
+                $logs = Log::whereHas('user', function ($query) use ($searchTerm) {
+                    $query->where('name', 'LIKE', '%' . $searchTerm . '%');
+                })->orderBy('created_at', 'desc')->get();
+                if($logs->count() == 0)
+                {
+                    // Search by message
+                    $logs = Log::where('message', 'LIKE', '%' . $searchTerm . '%')->orderBy('created_at', 'desc')->get();
+                }
+            }
+        }
+        else
+            $logs = Log::orderBy('created_at', 'desc')->paginate(20);
+    
+        return view('list.logs', ['logs' => $logs, 'find' => $request->input('find')]);
     }
 }
