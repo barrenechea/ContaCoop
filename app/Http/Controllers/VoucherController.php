@@ -959,6 +959,16 @@ class VoucherController extends Controller
         return redirect('/home');
     }
 
+    public function list(Request $request)
+    {
+    	if($request->input('find'))
+    		$vouchers = Voucher::where('description', 'LIKE', '%' . $request->input('find') . '%')->get();
+    	else
+    		$vouchers = Voucher::orderBy('date', 'desc')->paginate(20);
+        
+    	return view('list.vouchers', ['vouchers' => $vouchers, 'find' => $request->input('find')]);
+    }
+
     public function generateFolios(Request $request)
     {
         $start = $request->input('start');

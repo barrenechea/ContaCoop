@@ -35,6 +35,9 @@
                     <li>
                         <a class="{{ Request::is('view/voucher/*') ? 'active' : '' }}" href="" data-toggle="modal" data-target="#modal-findvoucher"><i class="si si-magnifier"></i><span class="sidebar-mini-hide">Por código</span></a>
                     </li>
+                    <li>
+                        <a class="{{ Request::is('list/vouchers') ? 'active' : '' }}" href="{{ url('/list/vouchers') }}"><i class="fa fa-list"></i><span class="sidebar-mini-hide">Listar todos</span></a>
+                    </li>
                     @endcan
                     <li class="nav-main-heading"><span class="sidebar-mini-hide">Generar</span></li>
                     <li>

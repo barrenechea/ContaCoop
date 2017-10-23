@@ -57,6 +57,7 @@ Route::group(['middleware' => ['auth', 'init']], function () {
 			Route::get('identifications', 'IdentificationController@list');
 			Route::get('banks', 'BankController@list');
 		});
+		Route::get('vouchers', 'VoucherController@list')->middleware('can:view_voucher');
 	});
 
 	// Route group for deleting stuff
