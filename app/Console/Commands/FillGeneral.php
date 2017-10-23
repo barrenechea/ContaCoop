@@ -81,9 +81,10 @@ class FillGeneral extends Command
             $var->name = 'modify_admin_account';
             $var->description = 'Administrar ContaCoop';
             $var->save();
+            echo "Roles: Done!\n";
         }
         else
-            echo "Data already on database\n";
+            echo "Roles data already on database\n";
 
         if(Config::count() == 0)
         {
@@ -116,9 +117,10 @@ class FillGeneral extends Command
             $var->name = 'company_legal_representative_rut';
             $var->value = '7.699.435-8';
             $var->save();
+            echo "Config: Done!\n";
         }
         else
-            echo "Data already on database\n";
+            echo "Config data already on database\n";
         
         if(Doctype::count() == 0)
         {
@@ -162,9 +164,9 @@ class FillGeneral extends Command
             $var->description = 'OTROS';
             $var->save();
 
-            echo "Done!\n";
+            echo "Doctype: Done!\n";
         }
         else
-            echo "Data already on database\n";
+            echo "Doctype data already on database\n";
     }
 }

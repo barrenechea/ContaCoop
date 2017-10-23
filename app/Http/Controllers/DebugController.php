@@ -44,7 +44,7 @@ class DebugController extends Controller
 			$account->save();
 		}
 
-		return redirect('/list/accounts');
+		return "Accounts: Done!";
     }
 
     public function retrieveIdentifications()
@@ -64,7 +64,7 @@ class DebugController extends Controller
 			$identification->save();
 		}
 
-		return redirect('/list/identifications');
+		return "Identifications: Done!";
     }
 
     public function retrieveBanks()
@@ -92,6 +92,6 @@ class DebugController extends Controller
 			$bank->save();
 		}
 
-		return redirect('/list/banks');
+		return "Banks: Done!";
     }
 }

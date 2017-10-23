@@ -442,7 +442,7 @@ class FillFECU extends Command
             
             // -------------------------------------
 
-            echo "Done!\n";
+            echo "FECU: Done!\n";
         }
         else
             echo "FECU Data already on database\n";
