@@ -42,8 +42,12 @@ Route::group(['middleware' => ['auth', 'init']], function () {
 			Route::post('sysconfig', 'SystemController@updateSysConfig');
 		});
 
-		Route::get('voucher/{id}', 'VoucherController@updateGet');
-		Route::post('voucher', 'VoucherController@updatePost');
+		Route::group(['prefix' => 'voucher', 'middleware' => ['can:modify_voucher']], function () {
+			Route::get('id/{id}', 'VoucherController@modifyGet');
+			Route::post('income', 'VoucherController@modifyIncomePost');
+			Route::post('outcome', 'VoucherController@modifyOutcomePost');
+			Route::post('transfer', 'VoucherController@modifyTransferPost');
+		});
 	});
 
 	// Route group for listing stuff

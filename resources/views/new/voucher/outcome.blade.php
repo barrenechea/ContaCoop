@@ -239,6 +239,7 @@ $("#bank").select2({
     data: $banks,
     placeholder: "Seleccione un banco",
     allowClear: false,
+    selectOnClose: true,
     templateResult: formatOption
 });
 
@@ -259,6 +260,7 @@ $("#bank").on("select2:select", function (e) {
         data: $accounts,
         placeholder: "Seleccione...",
         allowClear: true,
+        selectOnClose: true,
         templateResult: formatOption,
         matcher: customMatcher
     });
@@ -267,6 +269,7 @@ $("#bank").on("select2:select", function (e) {
         data: $doctypes,
         placeholder: "Tipo Doc.",
         allowClear: true,
+        selectOnClose: true,
         templateResult: formatOption
     });
 
@@ -281,6 +284,7 @@ $("#bank").on("select2:select", function (e) {
             }
           },
         allowClear: true,
+        selectOnClose: true,
         placeholder: "Seleccione..."
     });
 
@@ -392,6 +396,15 @@ function customMatcher(params, data) {
 
 $("#formulario").submit( function (e) {
     $("#sendButton").prop("disabled", true);
+});
+
+$("select").on('select2:unselecting', function(e) {
+    $(this).data('unselecting', true);
+}).on('select2:open', function(e) { // note the open event is important
+    if ($(this).data('unselecting')) {    
+        $(this).removeData('unselecting'); // you need to unset this before close
+        $(this).select2('close');
+    }
 });
 
 </script>

@@ -175,7 +175,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.0/sweetalert2.min.js"></script>
 <script>
 function swalUpdate () {
-    $(location).attr('href','{{ url("/update/voucher") }}/{{ $voucher->id }}');
+    $(location).attr('href','{{ url("/update/voucher/id") }}/{{ $voucher->id }}');
 }
 
 function swalDelete () {

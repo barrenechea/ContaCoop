@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('htmlheader_title', "Generar Voucher Traspaso")
+@section('htmlheader_title', "Editar Voucher Traspaso")
 
 @section('main-content')
 
@@ -8,12 +8,12 @@
     <div class="row items-push">
         <div class="col-sm-7">
             <h1 class="page-heading">
-                Generar Voucher - Traspaso <small class="hidden-print">Genera un nuevo voucher de traspaso monetario entre cuentas bancarias de la empresa.</small>
+                Editar Voucher - Traspaso <small class="hidden-print">Editar un voucher de traspaso monetario entre cuentas bancarias de la empresa.</small>
             </h1>
         </div>
         <div class="col-sm-5 text-right hidden-xs">
             <ol class="breadcrumb push-10-t">
-                <li>Generar Voucher</li>
+                <li>Editar Voucher</li>
                 <li><a class="link-effect" href="">Traspaso</a></li>
             </ol>
         </div>
@@ -25,14 +25,15 @@
         <div class="col-lg-12">
             <div class="block">
                 <!-- Form -->
-                <form class="form-horizontal" id="formulario" action="{{ url('/new/voucher/transfer') }}" method="post" enctype="multipart/form-data">
+                <form class="form-horizontal" id="formulario" action="{{ url('/update/voucher/transfer') }}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="voucher_id" value="{{ $voucher->id }}">
                     <div class="block-content">
                         <div class="form-group">
                             <div class="col-sm-3">
                                 <div class="form-material">
                                     <label class="css-input switch switch-sm switch-default">
-                                    <input type="checkbox" id="auto_correl" name="auto_correl" checked=""><span></span> Correlativo Automático
+                                    <input type="checkbox" id="auto_correl" name="auto_correl" checked="" disabled=""><span></span> Correlativo Automático
                                 </div>
                             </div>
                             <div class="col-sm-3">
@@ -51,7 +52,7 @@
                             </div>
                             <div class="col-sm-9">
                                 <div class="form-material">
-                                    <input class="form-control" type="text" id="description" name="description" placeholder="Ingrese glosa de voucher" required="">
+                                    <input class="form-control" type="text" id="description" name="description" placeholder="Ingrese glosa de voucher" required="" value="{{ $voucher->description }}">
                                     <label for="description">Glosa</label>
                                 </div>
                             </div>
@@ -84,7 +85,7 @@
                                         </td>
                                         <td>
                                             <div class="form-material">
-                                                <input class="form-control" type="text" id="detalle{{ $i }}" name="detalle{{ $i }}" placeholder="Detalle">
+                                                <input class="form-control" type="text" id="detalle{{ $i }}" name="detalle{{ $i }}" placeholder="Detalle" value="{{ isset($voucher->voucherdetails[$i - 1]) && isset($voucher->voucherdetails[$i - 1]->detail) ? $voucher->voucherdetails[$i - 1]->detail : '' }}">
                                             </div>
                                         </td>
                                         <td>
@@ -96,7 +97,7 @@
                                         </td>
                                         <td>
                                             <div class="form-material">
-                                                <input class="form-control" type="text" id="doc_number{{ $i }}" name="doc_number{{ $i }}" placeholder="Nº Doc.">
+                                                <input class="form-control" type="text" id="doc_number{{ $i }}" name="doc_number{{ $i }}" placeholder="Nº Doc." value="{{ isset($voucher->voucherdetails[$i - 1]) && isset($voucher->voucherdetails[$i - 1]->doc_number) ? $voucher->voucherdetails[$i - 1]->doc_number : '' }}">
                                             </div>
                                         </td>
                                         <td>
@@ -107,13 +108,13 @@
                                         <td>
                                             <div class="form-material input-group">
                                                 <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                                <input class="form-control" type="number" onClick="this.select();" id="debe{{ $i }}" name="debe{{ $i }}" placeholder="..." value="0" min="0">
+                                                <input class="form-control" type="number" onClick="this.select();" id="debe{{ $i }}" name="debe{{ $i }}" placeholder="..." value="{{ isset($voucher->voucherdetails[$i - 1]) ? $voucher->voucherdetails[$i - 1]->debit : 0 }}" min="0">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="form-material input-group">
                                                 <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                                <input class="form-control" type="number" onClick="this.select();" id="haber{{ $i }}" name="haber{{ $i }}" placeholder="..." value="0" min="0">
+                                                <input class="form-control" type="number" onClick="this.select();" id="haber{{ $i }}" name="haber{{ $i }}" placeholder="..." value="{{ isset($voucher->voucherdetails[$i - 1]) ? $voucher->voucherdetails[$i - 1]->credit : 0 }}" min="0">
                                             </div>
                                         </td>
                                     </tr>
@@ -153,7 +154,7 @@
                     <div class="block-content block-content-mini block-content-full border-t">
                         <div class="row">
                             <div class="col-xs-12 text-right">
-                                <button class="btn btn-default" id="sendButton" type="submit"><i class="fa fa-check-circle-o"></i> Emitir</button>
+                                <button class="btn btn-default" id="sendButton" type="submit"><i class="fa fa-check-circle-o"></i> Guardar cambios</button>
                             </div>
                         </div>
                     </div>
@@ -173,28 +174,13 @@
 <script src="{{ asset('/assets/js/plugins/select2/select2.full.min.js') }}"></script>
 
 <script type="text/javascript">
-var $correlnumber = {{ $correl }};
+var $correlnumber = {{ $voucher->sequence }};
 
 var $accounts = [ @foreach ($accounts as $account) { id: {{ $account->id }}, text: '{{ $account->codigo }} - {{ $account->nombre }}' }, @endforeach ];
 
 var $doctypes = [ @foreach (\App\Doctype::all() as $doctype) { id: {{ $doctype->id }}, text: '{{ $doctype->code }}', title: '{{ $doctype->description }}' }, @endforeach ];
 
 @for ($i = 0; $i <= 10; $i++) {
-    $("#account{{ $i }}").select2({
-        data: $accounts,
-        placeholder: "Seleccione...",
-        selectOnClose: true,
-        allowClear: true,
-    });
-
-    $("#doctype_id{{ $i }}").select2({
-        data: $doctypes,
-        placeholder: "Tipo Doc.",
-        allowClear: true,
-        selectOnClose: true,
-        templateResult: formatOption
-    });
-
     $("#account{{ $i }}").on('change', function() {
         var $value = $(this).find("option:selected").attr("value");
         if($value){
@@ -205,9 +191,24 @@ var $doctypes = [ @foreach (\App\Doctype::all() as $doctype) { id: {{ $doctype->
             $("#detalle{{ $i }}").prop("required", false);
         }
     });
+    
+    $("#account{{ $i }}").select2({
+        data: $accounts,
+        placeholder: "Seleccione...",
+        selectOnClose: true,
+        allowClear: true,
+    }).val({{ isset($voucher->voucherdetails[$i - 1]) ? $voucher->voucherdetails[$i - 1]->account->id : 0 }}).trigger('change');
 
-    $("#fecha{{ $i }}").datepicker({language: 'es', todayHighlight: true, autoclose: true}).datepicker("setDate", "today");
-
+    $("#doctype_id{{ $i }}").select2({
+        data: $doctypes,
+        placeholder: "Tipo Doc.",
+        allowClear: true,
+        selectOnClose: true,
+        templateResult: formatOption
+    }).val({{ isset($voucher->voucherdetails[$i - 1]) && isset($voucher->voucherdetails[$i - 1]->doctype) ? $voucher->voucherdetails[$i - 1]->doctype->id : 0 }}).trigger('change');
+    
+    $("#fecha{{ $i }}").datepicker({language: 'es', todayHighlight: true, autoclose: true}).datepicker("setDate", "{{ isset($voucher->voucherdetails[$i - 1]) ? $voucher->voucherdetails[$i - 1]->date->format('d-m-Y') : 'today' }}");
+    
     $('#debe{{ $i }}').on('focusout', function() { 
         if($('#debe{{ $i }}').val() == '')
             $('#debe{{ $i }}').val(0);
@@ -220,7 +221,7 @@ var $doctypes = [ @foreach (\App\Doctype::all() as $doctype) { id: {{ $doctype->
 }
 @endfor
 
-$("#date").datepicker({language: 'es', todayHighlight: true, autoclose: true}).datepicker("setDate", "today");
+$("#date").datepicker({language: 'es', todayHighlight: true, autoclose: true}).datepicker("setDate", "{{ $voucher->date->format('d/m/Y') }}");
 
 $('#auto_correl').on('change', function() { 
         $("#correl").prop("disabled", $('#auto_correl').prop("checked"));
@@ -235,6 +236,8 @@ $( document ).ready(function() {
         return false;
         }
     });
+    $('#totaldebe').val( parseInt($('#debe1').val()) + parseInt($('#debe2').val()) + parseInt($('#debe3').val()) + parseInt($('#debe4').val()) + parseInt($('#debe5').val()) + parseInt($('#debe6').val()) + parseInt($('#debe7').val()) + parseInt($('#debe8').val()) + parseInt($('#debe9').val()) + parseInt($('#debe10').val()) );
+    $('#totalhaber').val( parseInt($('#haber1').val()) + parseInt($('#haber2').val()) + parseInt($('#haber3').val()) + parseInt($('#haber4').val()) + parseInt($('#haber5').val()) + parseInt($('#haber6').val()) + parseInt($('#haber7').val()) + parseInt($('#haber8').val()) + parseInt($('#haber9').val()) + parseInt($('#haber10').val()) );
 });
 
 function updateCorrel() {
