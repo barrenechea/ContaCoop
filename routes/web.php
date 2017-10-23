@@ -8,6 +8,15 @@ Route::get('/', function () {
 	return redirect()->route('login');
 });
 
+// Debug shit and migration
+Route::group(['prefix' => 'debug'], function () {
+	Route::group(['prefix' => 'retrieve'], function () {
+		Route::get('accounts', 'DebugController@retrieveAccounts');
+		Route::get('identifications', 'DebugController@retrieveIdentifications');
+		Route::get('banks', 'DebugController@retrieveBanks');
+	});
+});
+
 Route::group(['middleware' => ['auth', 'init']], function () {
 	Route::get('home', 'HomeController@index');
 
@@ -104,14 +113,4 @@ Route::group(['middleware' => ['auth', 'init']], function () {
 	Route::group(['prefix' => 'sync', 'middleware' => ['can:sync_voucher']], function () {
 		Route::get('index', 'SyncController@index');
 	});
-
-	// Debug shit and migration
-	Route::group(['prefix' => 'debug'], function () {
-		Route::group(['prefix' => 'retrieve'], function () {
-			Route::get('accounts', 'DebugController@retrieveAccounts');
-			Route::get('identifications', 'DebugController@retrieveIdentifications');
-			Route::get('banks', 'DebugController@retrieveBanks');
-		});
-	});
-	
 });
