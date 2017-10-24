@@ -82,6 +82,9 @@ class RefreshAccounts extends Command
 
     private function retrieveUsers()
     {
+        echo "api: ";
+        echo env('API_KEY', '-');
+        echo "\n";
         try
         {
             $client = new \GuzzleHttp\Client();
