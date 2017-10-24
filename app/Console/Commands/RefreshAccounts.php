@@ -93,14 +93,10 @@ class RefreshAccounts extends Command
                                         ]
                                     ]
                                     )->getBody();
-            echo "Get: ";
-            echo $res;
-            echo "\n";
             return json_decode($res);
         }
         catch(\Exception $e)
         {
-            echo $e;
             return [];
         }
     }
