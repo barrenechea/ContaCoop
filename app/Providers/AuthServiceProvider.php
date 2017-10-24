@@ -59,7 +59,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('manage_app', function ($user) {
-            return $user->roles->where('name', 'modify_admin_account')->count();
+            return $user->roles->where('name', 'contacoop_admin')->count();
         });
     }
 }

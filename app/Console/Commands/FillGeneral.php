@@ -82,6 +82,12 @@ class FillGeneral extends Command
             $var->description = 'Administrar ContaCoop';
             $var->save();
             echo "Roles: Done!\n";
+
+            $var = new Role;
+            $var->name = 'contacoop_admin';
+            $var->description = 'Administrar Sistema ContaCoop';
+            $var->save();
+            echo "Roles: Done!\n";
         }
         else
             echo "Roles data already on database\n";
