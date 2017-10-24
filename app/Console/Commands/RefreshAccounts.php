@@ -82,9 +82,6 @@ class RefreshAccounts extends Command
 
     private function retrieveUsers()
     {
-        echo "api: ";
-        echo env('API_KEY', '-');
-        echo "\n";
         try
         {
             $client = new \GuzzleHttp\Client();
@@ -96,10 +93,14 @@ class RefreshAccounts extends Command
                                         ]
                                     ]
                                     )->getBody();
+            echo "Get: ";
+            echo $res;
+            echo "\n";
             return json_decode($res);
         }
         catch(\Exception $e)
         {
+            echo "Exception";
             return [];
         }
     }
