@@ -100,7 +100,7 @@ class RefreshAccounts extends Command
         }
         catch(\Exception $e)
         {
-            echo "Exception";
+            echo $e;
             return [];
         }
     }
