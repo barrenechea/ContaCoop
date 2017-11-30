@@ -16,6 +16,8 @@ use Carbon\Carbon;
 
 class VoucherController extends Controller
 {
+    const LINES = 25;
+
     public function viewVoucher($type, $sequence)
     {
         $id = explode('-', $sequence);
@@ -46,11 +48,12 @@ class VoucherController extends Controller
             $correl = 1;
         $accounts = Account::where('nivel', 4)->orderBy('codigo', 'asc')->get();
         $identifications = Identification::all();
-    	return view('new.voucher.income', ['accounts' => $accounts, 'identifications' => $identifications, 'correl' => $correl]);
+    	return view('new.voucher.income', ['accounts' => $accounts, 'identifications' => $identifications, 'correl' => $correl, 'lines' => self::LINES]);
     }
 
     public function newIncomePost(Request $request)
     {
+        $lines = intval($request->input('lines'));
         $accounts = [];
         $ruts = [];
         $nombres = [];
@@ -70,7 +73,7 @@ class VoucherController extends Controller
         $date = Carbon::createFromDate(intval(explode('-', $date)[2]),intval(explode('-', $date)[1]),intval(explode('-', $date)[0]));
         $description = $request->input('description');
 
-        for($i = 1; $i <= 10; $i++)
+        for($i = 1; $i <= $lines; $i++)
         {
             $accounts[] = intval($request->input('account'.$i)); // Id's de objeto Account
             $ruts[] = $request->input('rut'.$i); // Sólo estará lleno algún campo si no existe un Identification
@@ -87,7 +90,7 @@ class VoucherController extends Controller
 
         // Validar que al menos se llenaron dos lineas del voucher
         $count = 0;
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < $lines; $i++)
         {
             if(!$accounts[$i]) continue;
             $count++;
@@ -145,7 +148,7 @@ class VoucherController extends Controller
         // End generar un objeto Voucher y guardarlo en la base de datos
 
         // Comenzar a validar líneas del voucher
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < $lines; $i++)
         {
             $identification = null;
             // Validar si la línea actual posee una cuenta contable, de lo contrario se saltará
@@ -209,11 +212,12 @@ class VoucherController extends Controller
         $accounts = Account::where('nivel', 4)->orderBy('codigo', 'asc')->get();
         $identifications = Identification::all();
         $banks = Bank::all();
-        return view('new.voucher.outcome', ['accounts' => $accounts, 'identifications' => $identifications, 'banks' => $banks, 'correl' => $correl]);
+        return view('new.voucher.outcome', ['accounts' => $accounts, 'identifications' => $identifications, 'banks' => $banks, 'correl' => $correl, 'lines' => self::LINES]);
     }
 
     public function newOutcomePost(Request $request)
     {
+        $lines = intval($request->input('lines'));
         $accounts = [];
         $ruts = [];
         $nombres = [];
@@ -237,7 +241,7 @@ class VoucherController extends Controller
         $beneficiary = $request->input('beneficiary');
         $check_number = $request->input('checkact');
 
-        for($i = 1; $i <= 10; $i++)
+        for($i = 1; $i <= $lines; $i++)
         {
             $accounts[] = intval($request->input('account'.$i)); // Id's de objeto Account
             $ruts[] = $request->input('rut'.$i); // Sólo estará lleno algún campo si no existe un Identification
@@ -254,7 +258,7 @@ class VoucherController extends Controller
 
         // Validar que al menos se llenaron dos lineas del voucher
         $count = 0;
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < $lines; $i++)
         {
             if(!$accounts[$i]) continue;
             $count++;
@@ -319,7 +323,7 @@ class VoucherController extends Controller
         // End actualizar Nº de cheque del banco
 
         // Comenzar a validar líneas del voucher
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < $lines; $i++)
         {
             $identification = null;
             // Validar si la línea actual posee una cuenta contable, de lo contrario se saltará
@@ -379,11 +383,12 @@ class VoucherController extends Controller
         else
             $correl = 1;
         $accounts = Account::where('nivel', 4)->orderBy('codigo', 'asc')->get();
-        return view('new.voucher.transfer', ['accounts' => $accounts, 'correl' => $correl]);
+        return view('new.voucher.transfer', ['accounts' => $accounts, 'correl' => $correl, 'lines' => self::LINES]);
     }
 
     public function newTransferPost(Request $request)
     {
+        $lines = intval($request->input('lines'));
         $accounts = [];
         $detalles = [];
         $doctype_ids = [];
@@ -399,7 +404,7 @@ class VoucherController extends Controller
         $date = Carbon::createFromDate(intval(explode('-', $date)[2]),intval(explode('-', $date)[1]),intval(explode('-', $date)[0]));
         $description = $request->input('description');
 
-        for($i = 1; $i <= 10; $i++)
+        for($i = 1; $i <= $lines; $i++)
         {
             $accounts[] = intval($request->input('account'.$i)); // Id's de objeto Account
             $detalles[] = $request->input('detalle'.$i);
@@ -413,7 +418,7 @@ class VoucherController extends Controller
 
         // Validar que al menos se llenaron dos lineas del voucher
         $count = 0;
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < $lines; $i++)
         {
             if(!$accounts[$i]) continue;
             $count++;
@@ -469,7 +474,7 @@ class VoucherController extends Controller
         // End generar un objeto Voucher y guardarlo en la base de datos
 
         // Comenzar a validar líneas del voucher
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < $lines; $i++)
         {
             // Validar si la línea actual posee una cuenta contable, de lo contrario se saltará
             if(!$accounts[$i]) continue;
@@ -505,22 +510,23 @@ class VoucherController extends Controller
         {
             $accounts = Account::where('nivel', 4)->orderBy('codigo', 'asc')->get();
             $identifications = Identification::all();
-            return view('update.voucher.income', ['accounts' => $accounts, 'identifications' => $identifications, 'voucher' => $voucher]);
+            return view('update.voucher.income', ['accounts' => $accounts, 'identifications' => $identifications, 'voucher' => $voucher, 'lines' => self::LINES]);
         }elseif($voucher->type == "E")
         {
             $accounts = Account::where('nivel', 4)->orderBy('codigo', 'asc')->get();
             $identifications = Identification::all();
             $banks = Bank::all();
-            return view('update.voucher.outcome', ['accounts' => $accounts, 'identifications' => $identifications, 'banks' => $banks, 'voucher' => $voucher]);
+            return view('update.voucher.outcome', ['accounts' => $accounts, 'identifications' => $identifications, 'banks' => $banks, 'voucher' => $voucher, 'lines' => self::LINES]);
         }elseif($voucher->type == "T")
         {
             $accounts = Account::where('nivel', 4)->orderBy('codigo', 'asc')->get();
-            return view('update.voucher.transfer', ['accounts' => $accounts, 'voucher' => $voucher]);
+            return view('update.voucher.transfer', ['accounts' => $accounts, 'voucher' => $voucher, 'lines' => self::LINES]);
         }
     }
 
     public function modifyIncomePost(Request $request)
     {
+        $lines = intval($request->input('lines'));
         $accounts = [];
         $ruts = [];
         $nombres = [];
@@ -538,7 +544,7 @@ class VoucherController extends Controller
         $date = Carbon::createFromDate(intval(explode('-', $date)[2]),intval(explode('-', $date)[1]),intval(explode('-', $date)[0]));
         $description = $request->input('description');
 
-        for($i = 1; $i <= 10; $i++)
+        for($i = 1; $i <= $lines; $i++)
         {
             $accounts[] = intval($request->input('account'.$i)); // Id's de objeto Account
             $ruts[] = $request->input('rut'.$i); // Sólo estará lleno algún campo si no existe un Identification
@@ -555,7 +561,7 @@ class VoucherController extends Controller
 
         // Validar que al menos se llenaron dos lineas del voucher
         $count = 0;
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < $lines; $i++)
         {
             if(!$accounts[$i]) continue;
             $count++;
@@ -592,7 +598,7 @@ class VoucherController extends Controller
         // End generar un objeto Voucher y guardarlo en la base de datos
 
         // Comenzar a validar líneas del voucher
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < $lines; $i++)
         {
             $identification = null;
             // Validar si la línea actual posee una cuenta contable, de lo contrario se saltará
@@ -671,6 +677,7 @@ class VoucherController extends Controller
 
     public function modifyOutcomePost(Request $request)
     {
+        $lines = intval($request->input('lines'));
         $accounts = [];
         $ruts = [];
         $nombres = [];
@@ -692,7 +699,7 @@ class VoucherController extends Controller
         $beneficiary = $request->input('beneficiary');
         $check_number = $request->input('checkact');
 
-        for($i = 1; $i <= 10; $i++)
+        for($i = 1; $i <= $lines; $i++)
         {
             $accounts[] = intval($request->input('account'.$i)); // Id's de objeto Account
             $ruts[] = $request->input('rut'.$i); // Sólo estará lleno algún campo si no existe un Identification
@@ -709,7 +716,7 @@ class VoucherController extends Controller
 
         // Validar que al menos se llenaron dos lineas del voucher
         $count = 0;
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < $lines; $i++)
         {
             if(!$accounts[$i]) continue;
             $count++;
@@ -751,7 +758,7 @@ class VoucherController extends Controller
         // End actualizar Nº de cheque del banco
 
         // Comenzar a validar líneas del voucher
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < $lines; $i++)
         {
             $identification = null;
             // Validar si la línea actual posee una cuenta contable, de lo contrario se saltará
@@ -831,6 +838,7 @@ class VoucherController extends Controller
 
     public function modifyTransferPost(Request $request)
     {
+        $lines = intval($request->input('lines'));
         $accounts = [];
         $detalles = [];
         $doctype_ids = [];
@@ -844,7 +852,7 @@ class VoucherController extends Controller
         $date = Carbon::createFromDate(intval(explode('-', $date)[2]),intval(explode('-', $date)[1]),intval(explode('-', $date)[0]));
         $description = $request->input('description');
 
-        for($i = 1; $i <= 10; $i++)
+        for($i = 1; $i <= $lines; $i++)
         {
             $accounts[] = intval($request->input('account'.$i)); // Id's de objeto Account
             $detalles[] = $request->input('detalle'.$i);
@@ -858,7 +866,7 @@ class VoucherController extends Controller
 
         // Validar que al menos se llenaron dos lineas del voucher
         $count = 0;
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < $lines; $i++)
         {
             if(!$accounts[$i]) continue;
             $count++;
@@ -891,7 +899,7 @@ class VoucherController extends Controller
         // End generar un objeto Voucher y guardarlo en la base de datos
 
         // Comenzar a validar líneas del voucher
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < $lines; $i++)
         {
             // Validar si la línea actual posee una cuenta contable, de lo contrario se saltará
             if(!$accounts[$i]) continue;

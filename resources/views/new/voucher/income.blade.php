@@ -27,6 +27,7 @@
                 <!-- Form -->
                 <form class="form-horizontal" id="formulario" action="{{ url('/new/voucher/income') }}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="lines" value="{{ $lines }}">
                     <div class="block-content">
                         <div class="form-group">
                             <div class="col-sm-3">
@@ -81,7 +82,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @for($i = 1; $i <= 10; $i++)
+                                    @for($i = 1; $i <= $lines; $i++)
                                     <tr>
                                         <td>
                                             <div class="form-material">
@@ -197,13 +198,14 @@
 
 <script type="text/javascript">
 var $correlnumber = {{ $correl }};
+var $lines = {{ $lines }};
 
 var $accounts = [ @foreach ($accounts as $account) { id: {{ $account->id }}, text: '{{ $account->codigo }}', title: '{{ $account->nombre }}', rut: '{{ $account->ctacte2 }}' }, @endforeach ];
 var $identifications = [ @foreach ($identifications as $identification) { id: {{ $identification->id }}, text: '{{ $identification->name }}', title: '{{ $identification->rut }}' }, @endforeach ];
 
 var $doctypes = [ @foreach (\App\Doctype::all() as $doctype) { id: {{ $doctype->id }}, text: '{{ $doctype->code }}', title: '{{ $doctype->description }}' }, @endforeach ];
 
-@for ($i = 0; $i <= 10; $i++) {
+@for ($i = 0; $i <= $lines; $i++) {
     $("#account{{ $i }}").select2({
         data: $accounts,
         placeholder: "Seleccione...",

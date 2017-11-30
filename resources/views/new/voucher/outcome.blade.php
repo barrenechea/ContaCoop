@@ -27,6 +27,7 @@
                 <!-- Form -->
                 <form class="form-horizontal" id="formulario" action="{{ url('/new/voucher/outcome') }}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="lines" value="{{ $lines }}">
                     <div class="block-content">
                         <div class="form-group">
                             <div class="col-sm-3">
@@ -113,7 +114,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @for($i = 1; $i <= 10; $i++)
+                                    @for($i = 1; $i <= $lines; $i++)
                                     <tr>
                                         <td>
                                             <div class="form-material">
@@ -226,6 +227,7 @@
 <script src="{{ asset('/assets/js/plugins/select2/select2.full.min.js') }}"></script>
 
 <script type="text/javascript">
+var $lines = {{ $lines }};
 var $correlnumber = {{ $correl }};
 
 var $accounts = [ @foreach ($accounts as $account) { id: {{ $account->id }}, text: '{{ $account->codigo }}', title: '{{ $account->nombre }}', rut: '{{ $account->ctacte2 }}' }, @endforeach ];
@@ -255,7 +257,7 @@ $("#bank").on("select2:select", function (e) {
     }
 });
 
-@for ($i = 0; $i <= 10; $i++) {
+@for ($i = 0; $i <= $lines; $i++) {
     $("#account{{ $i }}").select2({
         data: $accounts,
         placeholder: "Seleccione...",

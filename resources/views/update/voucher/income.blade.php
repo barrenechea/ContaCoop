@@ -28,6 +28,7 @@
                 <form class="form-horizontal" id="formulario" action="{{ url('/update/voucher/income') }}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="voucher_id" value="{{ $voucher->id }}">
+                    <input type="hidden" name="lines" value="{{ $lines }}">
                     <div class="block-content">
                         <div class="form-group">
                             <div class="col-sm-3">
@@ -82,7 +83,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @for($i = 1; $i <= 10; $i++)
+                                    @for($i = 1; $i <= $lines; $i++)
                                     <tr>
                                         <td>
                                             <div class="form-material">
@@ -197,6 +198,7 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script type="text/javascript">
+var $lines = {{ $lines }};
 var $correlnumber = {{ $voucher->sequence }};
 
 var $accounts = [ @foreach ($accounts as $account) { id: {{ $account->id }}, text: '{{ $account->codigo }}', title: '{{ $account->nombre }}', rut: '{{ $account->ctacte2 }}' }, @endforeach ];
@@ -204,7 +206,7 @@ var $identifications = [ @foreach ($identifications as $identification) { id: {{
 
 var $doctypes = [ @foreach (\App\Doctype::all() as $doctype) { id: {{ $doctype->id }}, text: '{{ $doctype->code }}', title: '{{ $doctype->description }}' }, @endforeach ];
 
-@for ($i = 1; $i <= 10; $i++) {
+@for ($i = 1; $i <= $lines; $i++) {
     @if(isset($voucher->voucherdetails[$i - 1]))
     $("#account{{ $i }}").on('change', function() {
         var $value = $(this).find("option:selected").attr("value");
